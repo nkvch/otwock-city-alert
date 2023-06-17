@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import LeftMenu from "../leftMenu";
+import { AlertInterface } from "../Map/types";
 
 interface Address {
   id: number;
@@ -26,18 +27,9 @@ const mockAddresses: Address[] = [
 
 const PLusButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedAddresses, setSelectedAddresses] = useState<Address[]>([]);
 
   const handleOpen = () => {
     setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-  const handleSelectAddress = (event: any, value: Address[]) => {
-    setSelectedAddresses(value);
   };
 
   return (
@@ -55,6 +47,9 @@ const PLusButton = () => {
             position: "fixed",
             top: "20px",
             left: "20px",
+            "&:hover": {
+              backgroundColor: "#f5f5f5",
+            },
           }}
         >
           <AddIcon />
@@ -67,7 +62,7 @@ const PLusButton = () => {
           </Typography>
         </IconButton>
       ) : (
-        <LeftMenu open={isOpen} setOpen={setIsOpen} />
+        <LeftMenu open={isOpen} setOpen={setIsOpen} alert={{} as AlertInterface} />
       )}
     </>
   );

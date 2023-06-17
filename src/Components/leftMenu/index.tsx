@@ -10,49 +10,108 @@ import {
   Switch,
   Divider,
   Button,
+  Icon,
 } from "@mui/material";
-import { useFormik, FormikHandlers } from "formik";
-import { useState } from "react";
-interface Alert {
-  id: number;
-  name: string;
-  isUrgent: boolean;
-  categoryId: number;
-  addresses: Address[];
-  dateOfCreation: Date;
-  dateOfStart: Date;
-  dateOfEnd: Date;
-}
+import React, { useState } from "react";
+import { AlertInterface, LocationData } from "../Map/types";
+import LocationCard from "../locationCard";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import CarCrashIcon from "@mui/icons-material/CarCrash";
+import ParkIcon from "@mui/icons-material/Park";
+import PowerOffIcon from "@mui/icons-material/PowerOff";
+import BathtubIcon from "@mui/icons-material/Bathtub";
+
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
-  // alert: Alert;
+  alert: AlertInterface;
   // onSave: (alert: Alert) => void;
 }
 
-interface Address {
-  id: number;
-  name: string;
-}
+const LabeledIcon = ({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+      }}
+    >
+      {icon}
+      <Typography sx={{ marginLeft: "0.25rem", fontSize: "0.75rem" }}>
+        {label}
+      </Typography>
+    </Box>
+  );
+};
 
-const MenuDrawer = ({ open, setOpen }: Props) => {
-  const mockAddresses: Address[] = [
-    { id: 1, name: "123 Main St, Anytown, USA" },
-    { id: 2, name: "456 Elm St, Anytown, USA" },
-    { id: 3, name: "789 Oak St, Anytown, USA" },
-  ];
-  const initialValues = {
-    id: 1,
-    isUrgent: false,
-    categoryId: 0,
-    addresses: [],
-    dateOfCreation: new Date(),
-    dateOfStart: new Date(),
-    dateOfEnd: new Date(),
-    numberOfHours: 0,
-    text: "",
-  };
+const MenuDrawer = ({ open, setOpen, alert }: Props) => {
+  const [locationsData, setLocationData] = useState<LocationData[]>([
+    {
+      place_id: 1,
+      licence:
+        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+      osm_type: "node",
+      osm_id: 707758,
+      lat: "50.061914",
+      lon: "19.936095",
+      place_rank: 30,
+      category: "place",
+      type: "house",
+      importance: 0.411,
+      addresstype: "house",
+      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
+      display_name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
 
+      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
+    },
+    {
+      place_id: 2,
+      licence:
+        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+      osm_type: "node",
+      osm_id: 707758,
+      lat: "50.061914",
+      lon: "19.936095",
+      place_rank: 30,
+      category: "place",
+      type: "house",
+      importance: 0.411,
+      addresstype: "house",
+      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
+      display_name:
+        "Kościussegezki 6, Kraków, małopolskie, 31-056, Polskafegrgr",
+
+      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
+    },
+    {
+      place_id: 3,
+      licence:
+        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+      osm_type: "node",
+      osm_id: 707758,
+      lat: "50.061914",
+      lon: "19.936095",
+      place_rank: 30,
+      category: "place",
+      type: "house",
+      importance: 0.411,
+      addresstype: "house",
+      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
+      display_name:
+        "Kościussegezki 6, Kraków, małopolskie, 31-056, Polskafegrgr",
+
+      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
+    },
+  ]);
   const handleMenuClose = () => {
     setOpen(false);
   };
@@ -65,56 +124,58 @@ const MenuDrawer = ({ open, setOpen }: Props) => {
       padding: 3,
     },
   };
-  const formik = useFormik({
-    initialValues,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+  const [currentAlert, setCurrentAlert] = useState<AlertInterface>({
+    ...alert,
+    isUrgent: false,
   });
-  const [selectedAddresses, setSelectedAddresses] = useState<Address[]>([]);
-  const [isAlertUrgent, setIsAlertUrgent] = useState(false);
-  const [chosenAlertCategoryId, setChosenAlertCategoryId] = useState<
-    number | null
-  >(null);
   const mockAlertCategories = [
     {
       id: 1,
       name: "Pożar",
+      activeBackground: "#c26b02",
+      inactiveBackground: "#c26b0290",
       chosen: false,
       isUrgent: true,
-      color: "orange",
+      icon: <LocalFireDepartmentIcon />,
     },
     {
       id: 2,
       name: "Wypadek na drodze",
+      activeBackground: "#ff0000",
+      inactiveBackground: "#ff6666",
       chosen: false,
       isUrgent: true,
+      icon: <CarCrashIcon />,
     },
     {
       id: 3,
-      name: "Napad",
+      name: "Drzewo na drodze",
+      activeBackground: "#098217",
+      inactiveBackground: "#09821790",
       chosen: false,
       isUrgent: true,
+      icon: <ParkIcon />,
     },
     {
       id: 4,
-      name: "Drzewo na drodze",
+      name: "przerwa w dostawie prądu",
+      activeBackground: "#fcc612",
+      inactiveBackground: "#fcc61290",
       chosen: false,
-      isUrgent: true,
+      isUrgent: false,
+      icon: <PowerOffIcon />,
     },
     {
       id: 5,
-      name: "przerwa w dostawie prądu",
-      chosen: false,
-      isUrgent: false,
-    },
-    {
-      id: 6,
       name: "przerwa w dostawie wody",
+      activeBackground: "#2356c4",
+      inactiveBackground: "#2356c490",
       chosen: false,
       isUrgent: false,
+      icon: <BathtubIcon />,
     },
   ];
+  const [numberOfHours, setNumberOfHours] = useState<number>(0);
   return (
     <div style={styles.root}>
       {open ? (
@@ -143,203 +204,229 @@ const MenuDrawer = ({ open, setOpen }: Props) => {
               <CloseIcon />
             </IconButton>
           </Box>
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Typography variant="h6">Pilne</Typography>
+            <Switch
+              checked={currentAlert.isUrgent}
+              onChange={() => {
+                setCurrentAlert({
+                  ...currentAlert,
+                  isUrgent: !currentAlert.isUrgent,
+                });
               }}
-            >
-              <Typography variant="h6">Pilne</Typography>
-              <Switch
-                checked={isAlertUrgent}
-                onChange={() => {
-                  setIsAlertUrgent(!isAlertUrgent);
-                  setChosenAlertCategoryId(null);
-                  formik.setFieldValue("isUrgent", !isAlertUrgent);
-                }}
-                color="error"
-              ></Switch>
-            </Box>
-            <Divider
-              sx={{
-                margin: "0.5rem",
-              }}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-              }}
-            >
-              {mockAlertCategories.map((category, index) => {
-                if (category.isUrgent !== isAlertUrgent) return null;
-                return (
-                  <Chip
-                    label={category.name}
-                    key={index}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "0.5rem",
-                      borderBottom: "1px solid #ccc",
-                      cursor: "pointer",
-                      width: "fit-content",
-                      backgroundColor:
-                        category.id === chosenAlertCategoryId
-                          ? "#2196f3"
-                          : "inherit",
-                      color:
-                        category.id === chosenAlertCategoryId
-                          ? "white"
-                          : "inherit",
-                      "&:hover": {
-                        backgroundColor: "#1976d2",
-                        color: "white",
-                      },
-                    }}
-                    onClick={() => {
-                      if (chosenAlertCategoryId === null) {
-                        setChosenAlertCategoryId(category.id);
-                        formik.setFieldValue("categoryId", category.id);
-                        category.chosen = true;
-                      } else if (category.id === chosenAlertCategoryId) {
-                        setChosenAlertCategoryId(null);
-                        category.chosen = false;
-                        formik.setFieldValue("categoryId", 0);
-                      } else if (chosenAlertCategoryId !== null) {
-                        category.chosen = true;
-                        formik.setFieldValue("categoryId", category.id);
-                        setChosenAlertCategoryId(category.id);
-                      }
-                    }}
-                  />
-                );
-              })}
-            </Box>
-            <Autocomplete
-              multiple
-              options={mockAddresses}
-              getOptionLabel={(option) => option.name}
-              value={selectedAddresses}
-              onChange={formik.handleChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Search for an address"
-                  name="addresses"
-                  onChange={formik.handleChange}
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                />
-              )}
-              renderOption={(props, option, { selected }) => (
-                <ListItem {...props}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "0.5rem",
-                      borderBottom: "1px solid #ccc",
-                      width: "100%",
-                      backgroundColor: selected ? "#eee" : "transparent",
-                    }}
-                  >
-                    <Typography>{option.name}</Typography>
-                  </Box>
-                </ListItem>
-              )}
-            />
-            {isAlertUrgent ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
-                }}
-              >
-                <TextField
-                  label="Wybierz ile godzin"
-                  variant="outlined"
-                  onChange={formik.handleChange}
-                  margin="normal"
-                  type="number"
-                  name="numberOfHours"
-                  InputProps={{
-                    inputProps: {
-                      min: 0,
-                      step: 0.5,
+              color="error"
+            ></Switch>
+          </Box>
+          <Divider
+            sx={{
+              margin: "0.5rem",
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
+            {mockAlertCategories.map((category, index) => {
+              if (category.isUrgent !== currentAlert.isUrgent) return null;
+              return (
+                <Chip
+                  label={
+                    <LabeledIcon icon={category.icon} label={category.name} />
+                  }
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "0.5rem",
+                    borderBottom: "1px solid #ccc",
+                    cursor: "pointer",
+                    width: "fit-content",
+                    color: "white",
+                    backgroundColor:
+                      category.id === currentAlert.categoryId
+                        ? category.activeBackground
+                        : category.inactiveBackground,
+                    "&:hover": {
+                      backgroundColor: category.activeBackground,
                     },
                   }}
+                  onClick={() => {
+                    if (!currentAlert.categoryId) {
+                      setCurrentAlert({
+                        ...currentAlert,
+                        categoryId: category.id,
+                      });
+                      category.chosen = true;
+                    } else if (category.id === currentAlert.categoryId) {
+                      setCurrentAlert({
+                        ...currentAlert,
+                        categoryId: null,
+                      });
+                      category.chosen = false;
+                    } else if (currentAlert.categoryId !== null) {
+                      mockAlertCategories.forEach((item) => {
+                        if (item.id === currentAlert.categoryId) {
+                          item.chosen = false;
+                        }
+                      });
+                      setCurrentAlert({
+                        ...currentAlert,
+                        categoryId: category.id,
+                      });
+                    }
+                  }}
                 />
-              </Box>
-            ) : (
+              );
+            })}
+          </Box>
+          <Box
+            className="target-for-scroll"
+            sx={{
+              width: "100%",
+              justifyContent: "center",
+              height: "110px",
+              overflowY: "auto",
+              overflowX: "hidden",
+              borderBottom: "1px solid gray",
+              borderRadius: "5px",
+            }}
+          >
+            {locationsData.map((location, index) => {
+              return (
+                <LocationCard
+                  locationData={location}
+                  key={index}
+                  handleDeleteAddress={() => {
+                    setLocationData(
+                      locationsData.filter(
+                        (item) => item.place_id !== location.place_id
+                      )
+                    );
+                  }}
+                />
+              );
+            })}
+          </Box>
+
+          {currentAlert.isUrgent ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+              }}
+            >
+              <TextField
+                label="Wybierz ile godzin"
+                variant="outlined"
+                onChange={(e) => setNumberOfHours(parseInt(e.target.value))}
+                margin="normal"
+                value={numberOfHours}
+                type="number"
+                name="numberOfHours"
+                InputProps={{
+                  inputProps: {
+                    min: 0,
+                    step: 0.5,
+                  },
+                }}
+              />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+              }}
+            >
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                <TextField
+                  label="Wybierz datę początkową"
+                  variant="outlined"
+                  value={currentAlert.dateOfStart}
+                  onChange={(e) => {
+                    setCurrentAlert({
+                      ...currentAlert,
+                      dateOfStart: new Date(e.target.value),
+                    });
                   }}
-                >
-                  <TextField
-                    label="Wybierz datę początkową"
-                    variant="outlined"
-                    margin="normal"
-                    onChange={formik.handleChange}
-                    type="datetime-local"
-                    name="startDate"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    fullWidth
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                  margin="normal"
+                  type="datetime-local"
+                  name="startDate"
+                  InputLabelProps={{
+                    shrink: true,
                   }}
-                >
-                  <TextField
-                    label="Wybierz końiec"
-                    variant="outlined"
-                    margin="normal"
-                    onChange={formik.handleChange}
-                    type="datetime-local"
-                    name="endDate"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    fullWidth
-                  />
-                </Box>
+                  fullWidth
+                />
               </Box>
-            )}
-            <TextField
-              label="Tekst alertu"
-              variant="outlined"
-              margin="normal"
-              multiline
-              onChange={formik.handleChange}
-              name="text"
-              rows={4}
-              fullWidth
-            />
-            <Button type="submit" variant="contained">
-              Zgłoś
-            </Button>
-          </form>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TextField
+                  label="Wybierz końiec"
+                  variant="outlined"
+                  margin="normal"
+                  type="datetime-local"
+                  value={currentAlert.dateOfEnd}
+                  onChange={(e) => {
+                    setCurrentAlert({
+                      ...currentAlert,
+                      dateOfEnd: new Date(e.target.value),
+                    });
+                  }}
+                  name="endDate"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </Box>
+            </Box>
+          )}
+          <TextField
+            label="Tekst alertu"
+            variant="outlined"
+            margin="normal"
+            multiline
+            name="body"
+            onChange={(e) => {
+              setCurrentAlert({
+                ...currentAlert,
+                body: e.target.value,
+              });
+            }}
+            rows={3}
+            fullWidth
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            onClick={() => {
+              console.log(currentAlert);
+              handleMenuClose();
+            }}
+          >
+            Zgłoś
+          </Button>
         </Box>
       ) : null}
     </div>
