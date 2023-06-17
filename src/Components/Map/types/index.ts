@@ -16,7 +16,10 @@ export interface CustomArea {
   points: LatLngLiteral[];
 }
 
-export type Area = CircleArea | SquareArea | CustomArea;
+export interface Area {
+  type: "circle" | "square" | "custom";
+  area: CircleArea | SquareArea | CustomArea;
+}
 
 export interface Address {
   road: string;

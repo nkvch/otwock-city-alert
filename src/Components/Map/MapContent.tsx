@@ -1,18 +1,17 @@
-import { LatLngLiteral, point, divIcon } from 'leaflet';
+import { LatLngLiteral } from 'leaflet';
 import { useCallback, useState } from 'react';
 import { Circle, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import CustomPopupMarker from './components/CustomPopupMarker';
-import { CircleArea, CustomArea, LocationData, SquareArea } from './types';
-import UserMarker from './components/UserMarker';
 import { createUserCluserIcon } from './components/UserClusterIcon';
-// import 'leaflet/dist/leaflet.css';
+import UserMarker from './components/UserMarker';
+import { Area, CircleArea, LocationData } from './types';
 
 export interface MapContentProps {
   usersToDisplay?: LatLngLiteral[];
-  onSelectNewArea: (area: CircleArea | SquareArea | CustomArea) => void;
+  onSelectNewArea: (area: Area) => void;
   onSelectNewLocation: (location: LocationData) => void;
-  areasToDisplay?: (CircleArea | SquareArea | CustomArea)[];
+  areasToDisplay?: Area[];
   locationsToDisplay?: LocationData[];
 }
 
@@ -33,8 +32,11 @@ function MapContent(props: MapContentProps) {
       });
     } else if (selectedPosition && selectedRadius) {
       onSelectNewArea({
-        center: selectedPosition,
-        radius: selectedRadius,
+        type: 'circle',
+        area: {
+          center: selectedPosition,
+          radius: selectedRadius,
+        }
       });
       setSelectedPosition(null);
       setSelectedRadius(null);
@@ -61,6 +63,21 @@ function MapContent(props: MapContentProps) {
     click: handleMapClick,
     mousemove: handleMapMouseMove,
   });
+
+  const renderArea = useCallback((area: Area) => {
+    switch (area.type) {
+      case 'circle':
+        const circleArea = area.area as CircleArea;
+        return (
+          <Circle
+            center={circleArea.center}
+            radius={circleArea.radius * 50000}
+          />
+        );
+      default:
+        return null;
+    }
+  }, []);
 
   return (
     <>
@@ -96,17 +113,12 @@ function MapContent(props: MapContentProps) {
         )
       }
       {
-        (areasToDisplay as CircleArea[])?.map((area) => (
-          <Circle
-            color='red'
-            center={area.center}
-            radius={area.radius * 50000}
-          />
-        ))
+        areasToDisplay?.map(renderArea)
       }
       {
         centerOfSelection && selectedRadius && (
           <Circle
+            color='gray'
             center={centerOfSelection}
             radius={selectedRadius * 50000}
           />
