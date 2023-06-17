@@ -1,11 +1,12 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
 import Map from './Components/Map/Map';
 import { LatLng } from 'leaflet';
-import { Area, LocationData } from './Components/Map/types';
+import { AlertInterface, Area, LocationData } from './Components/Map/types';
 import PLusButton from './Components/plusButton';
 import Searcher from './Components/Searcher/Searcher';
+import LeftMenu from './Components/leftMenu';
 
 const MapHolder = styled.div`
   width: 700px;
@@ -89,6 +90,7 @@ const OtwockLocation = new LatLng(52.1, 21.3);
 
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [selectedAreas, setSelectedAreas] = useState<Area[]>([]);
   const [locationsToDisplay, setLocationsToDisplay] = useState<LocationData[]>([]);
@@ -96,11 +98,24 @@ function App() {
   const onSelectNewArea = (area: Area) => setSelectedAreas([...selectedAreas, area]);
   const onSelectNewLocation = (location: LocationData) => setLocationsToDisplay([...locationsToDisplay, location]);
 
+  const deleteLocation = useCallback((location: LocationData) => {
+    const newLocations = locationsToDisplay.filter((loc) => loc.place_id !== location.place_id);
+    setLocationsToDisplay(newLocations);
+  }, [locationsToDisplay]);
 
   return (
     <>
-      <PLusButton />
+      <LeftMenu
+        locationsData={locationsToDisplay}
+        onDeleteLocation={deleteLocation}
+        open={isMenuOpen}
+        setOpen={setIsMenuOpen}
+        alert={{} as AlertInterface}
+      />
       <TopBar>
+        {
+          isMenuOpen ? null : <PLusButton onClick={() => setIsMenuOpen(true)} />
+        }
         <Searcher
           onSelectLocation={onSelectNewLocation}
         />

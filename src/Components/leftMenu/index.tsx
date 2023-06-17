@@ -25,6 +25,8 @@ interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
   alert: AlertInterface;
+  locationsData: LocationData[];
+  onDeleteLocation: (location: LocationData) => void;
   // onSave: (alert: Alert) => void;
 }
 
@@ -53,65 +55,7 @@ const LabeledIcon = ({
   );
 };
 
-const MenuDrawer = ({ open, setOpen, alert }: Props) => {
-  const [locationsData, setLocationData] = useState<LocationData[]>([
-    {
-      place_id: 1,
-      licence:
-        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-      osm_type: "node",
-      osm_id: 707758,
-      lat: "50.061914",
-      lon: "19.936095",
-      place_rank: 30,
-      category: "place",
-      type: "house",
-      importance: 0.411,
-      addresstype: "house",
-      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
-      display_name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
-
-      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
-    },
-    {
-      place_id: 2,
-      licence:
-        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-      osm_type: "node",
-      osm_id: 707758,
-      lat: "50.061914",
-      lon: "19.936095",
-      place_rank: 30,
-      category: "place",
-      type: "house",
-      importance: 0.411,
-      addresstype: "house",
-      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
-      display_name:
-        "Kościussegezki 6, Kraków, małopolskie, 31-056, Polskafegrgr",
-
-      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
-    },
-    {
-      place_id: 3,
-      licence:
-        "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-      osm_type: "node",
-      osm_id: 707758,
-      lat: "50.061914",
-      lon: "19.936095",
-      place_rank: 30,
-      category: "place",
-      type: "house",
-      importance: 0.411,
-      addresstype: "house",
-      name: "Kościuszki 6, Kraków, małopolskie, 31-056, Polska",
-      display_name:
-        "Kościussegezki 6, Kraków, małopolskie, 31-056, Polskafegrgr",
-
-      boundingbox: ["50.061864", "50.061964", "19.936045", "19.936145"],
-    },
-  ]);
+const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Props) => {
   const handleMenuClose = () => {
     setOpen(false);
   };
@@ -124,10 +68,12 @@ const MenuDrawer = ({ open, setOpen, alert }: Props) => {
       padding: 3,
     },
   };
+
   const [currentAlert, setCurrentAlert] = useState<AlertInterface>({
     ...alert,
     isUrgent: false,
   });
+
   const mockAlertCategories = [
     {
       id: 1,
@@ -175,6 +121,9 @@ const MenuDrawer = ({ open, setOpen, alert }: Props) => {
       icon: <BathtubIcon />,
     },
   ];
+
+  console.log("locationsData", locationsData);
+
   const [numberOfHours, setNumberOfHours] = useState<number>(0);
   return (
     <div style={styles.root}>
@@ -210,7 +159,7 @@ const MenuDrawer = ({ open, setOpen, alert }: Props) => {
               flexDirection: "row",
             }}
           >
-            <Typography variant="h6">Pilne</Typography>
+            <Typography color={'black'} variant="h6">Pilne</Typography>
             <Switch
               checked={currentAlert.isUrgent}
               onChange={() => {
@@ -305,11 +254,7 @@ const MenuDrawer = ({ open, setOpen, alert }: Props) => {
                   locationData={location}
                   key={index}
                   handleDeleteAddress={() => {
-                    setLocationData(
-                      locationsData.filter(
-                        (item) => item.place_id !== location.place_id
-                      )
-                    );
+                    onDeleteLocation(location);
                   }}
                 />
               );
@@ -433,4 +378,4 @@ const MenuDrawer = ({ open, setOpen, alert }: Props) => {
   );
 };
 
-export default MenuDrawer;
+export default LeftMenu;
