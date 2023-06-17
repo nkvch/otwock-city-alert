@@ -3,7 +3,7 @@ import { Card, IconButton, Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 interface LocationCardProps {
   locationData: LocationData;
-  handleDeleteAddress: () => void;
+  handleDeleteAddress: (location: LocationData) => void;
 }
 const LocationCard = ({
   locationData,
@@ -31,14 +31,12 @@ const LocationCard = ({
       >
         <Typography
           sx={{
-            // height: "100%",
-            // overflow: "hidden",
             textAlign: "left",
           }}
         >
           {locationData.display_name}
         </Typography>
-        <IconButton onClick={() => handleDeleteAddress()}>
+        <IconButton onClick={() => handleDeleteAddress(locationData)}>
           <DeleteIcon />
         </IconButton>
       </Box>

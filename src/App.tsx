@@ -98,11 +98,6 @@ function App() {
   const onSelectNewArea = (area: Area) => setSelectedAreas([...selectedAreas, area]);
   const onSelectNewLocation = (location: LocationData) => setLocationsToDisplay([...locationsToDisplay, location]);
 
-  const deleteLocation = useCallback((location: LocationData) => {
-    const newLocations = locationsToDisplay.filter((loc) => loc.place_id !== location.place_id);
-    setLocationsToDisplay(newLocations);
-  }, [locationsToDisplay]);
-
   const deleteArea = useCallback((area: Area) => {
     const newAreas = selectedAreas.filter((ar) => areCircleAreasDifferent(ar.area, area.area));
     setSelectedAreas(newAreas);
@@ -114,7 +109,7 @@ function App() {
         areasData={selectedAreas}
         onDeleteArea={deleteArea}
         locationsData={locationsToDisplay}
-        onDeleteLocation={deleteLocation}
+        setLocationsData={setLocationsToDisplay}
         open={isMenuOpen}
         setOpen={setIsMenuOpen}
         alert={{} as AlertInterface}

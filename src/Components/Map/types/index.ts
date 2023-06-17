@@ -55,8 +55,6 @@ export interface AlertInterface {
   id: number;
   isUrgent: boolean;
   categoryId: number | null;
-  addresses: Address[];
-  zoneIds: number[];
   dateOfCreation: Date;
   dateOfStart: Date;
   dateOfEnd: Date;
