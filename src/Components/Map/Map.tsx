@@ -1,4 +1,4 @@
-import { MapContainerProps } from "react-leaflet";
+import { MapContainerProps, ZoomControl } from "react-leaflet";
 import MapContent, { MapContentProps } from "./MapContent";
 import MapRoot from "./MapRoot";
 
@@ -12,10 +12,11 @@ function Map(props: MapProps) {
     ...rootProps
   } = props;
 
-  return <MapRoot {...rootProps}>
+  return <MapRoot {...rootProps} zoomControl={false} >
     <MapContent
       {...content}
     />
+    <ZoomControl position="bottomright" />
   </MapRoot>;
 }
 

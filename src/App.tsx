@@ -4,6 +4,7 @@ import './App.css'
 import Map from './Components/Map/Map';
 import { LatLng } from 'leaflet';
 import { Area, LocationData } from './Components/Map/types';
+import PLusButton from './Components/plusButton';
 
 const MapHolder = styled.div`
   width: 700px;
@@ -90,6 +91,7 @@ function App() {
 
   return (
     <>
+      <PLusButton />
       <Map
         center={OtwockLocation}
         scrollWheelZoom={true}

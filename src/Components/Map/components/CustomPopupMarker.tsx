@@ -27,11 +27,13 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
     }
   }, [defaultOpen]);
 
-  const onAddPointClick = useCallback(() => {
+  const onAddPointClick = useCallback((event: any) => {
+    event.stopPropagation();
     onPushToSelectedLocation(locationData!);
   }, [locationData, onPushToSelectedLocation]);
 
-  const onSelectAreaClick = useCallback(() => {
+  const onSelectAreaClick = useCallback((event: any) => {
+    event.stopPropagation();
     onSelectArea(center!);
   }, [center, onSelectArea]);
 

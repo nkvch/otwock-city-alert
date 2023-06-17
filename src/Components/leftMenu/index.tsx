@@ -127,6 +127,9 @@ const MenuDrawer = ({ open, setOpen }: Props) => {
             borderRadius: "5%",
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
             padding: "1rem",
+            zIndex: 1000,
+            top: "10%",
+            left: "20px",
           }}
         >
           <Box
@@ -225,7 +228,7 @@ const MenuDrawer = ({ open, setOpen }: Props) => {
                 <TextField
                   {...params}
                   label="Search for an address"
-                  name = "addresses"
+                  name="addresses"
                   onChange={formik.handleChange}
                   variant="outlined"
                   fullWidth
