@@ -1,12 +1,21 @@
-import { LatLng } from "leaflet";
+import { MapContainerProps } from "react-leaflet";
+import MapContent, { MapContentProps } from "./MapContent";
 import MapRoot from "./MapRoot";
-import MapContent from "./MapContent";
 
-const otwockLocation = new LatLng(52.1, 21.3);
+export interface MapProps extends MapContainerProps {
+  content: MapContentProps;
+}
 
-function Map() {
-  return <MapRoot center={otwockLocation} zoom={13}>
-    <MapContent />
+function Map(props: MapProps) {
+  const {
+    content,
+    ...rootProps
+  } = props;
+
+  return <MapRoot {...rootProps}>
+    <MapContent
+      {...content}
+    />
   </MapRoot>;
 }
 

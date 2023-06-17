@@ -1,104 +1,59 @@
-import { LatLng, LatLngBounds } from 'leaflet';
-import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Circle } from 'react-leaflet';
+import { LatLngLiteral } from 'leaflet';
+import { useCallback, useState } from 'react';
+import { Circle, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { CircleArea } from './types';
+import CustomPopupMarker from './components/CustomPopupMarker';
+import { CircleArea, CustomArea, LocationData, SquareArea } from './types';
 // import 'leaflet/dist/leaflet.css';
 
+export interface MapContentProps {
+  usersToDisplay?: LatLngLiteral[];
+  onSelectNewArea: (area: CircleArea | SquareArea | CustomArea) => void;
+  onSelectNewLocation: (location: LocationData) => void;
+  areasToDisplay?: (CircleArea | SquareArea | CustomArea)[];
+  locationsToDisplay?: LocationData[];
+}
 
-const getUsersInAreaMockResponse = {
-  users: [
-    {
-      id: 1,
-      lat: 52.1,
-      lng: 21.33,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 2,
-      lat: 52.1,
-      lng: 21.3,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 3,
-      lat: 52.1,
-      lng: 21.31,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 4,
-      lat: 52.1,
-      lng: 21.32,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 5,
-      lat: 52.1,
-      lng: 21.34,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 6,
-      lat: 52.12,
-      lng: 21.3,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 7,
-      lat: 52.11,
-      lng: 21.3,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 8,
-      lat: 52.23,
-      lng: 21.3,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-    {
-      id: 9,
-      lat: 52.13,
-      lng: 21.3,
-      whenLastUpdate: '2021-05-01T12:00:00Z',
-    },
-  ],
-};
+function MapContent(props: MapContentProps) {
+  const { usersToDisplay, onSelectNewArea, onSelectNewLocation, areasToDisplay, locationsToDisplay } = props;
 
+  const [selectedPosition, setSelectedPosition] = useState<LatLngLiteral | null>(null);
 
-
-function MapContent() {
-  const [selectedPosition, setSelectedPosition] = useState<[number, number] | null>(null);
+  const [centerOfSelection, setCenterOfSelection] = useState<LatLngLiteral | null>(null);
   const [selectedRadius, setSelectedRadius] = useState<number | null>(null);
 
-  const [selectedArea, setSelectedArea] = useState<CircleArea[]>([]);
 
   function handleMapClick(event: any) {
     if (!selectedPosition) {
-      setSelectedPosition([event.latlng.lat, event.latlng.lng]);
-      setSelectedRadius(0);
+      setSelectedPosition({
+        lat: event.latlng.lat,
+        lng: event.latlng.lng,
+      });
     } else if (selectedPosition && selectedRadius) {
-      setSelectedArea([
-        ...selectedArea,
-        {
-          center: selectedPosition,
-          radius: selectedRadius,
-        }
-      ]);
+      onSelectNewArea({
+        center: selectedPosition,
+        radius: selectedRadius,
+      });
       setSelectedPosition(null);
       setSelectedRadius(null);
+      setCenterOfSelection(null);
     }
   }
 
   function handleMapMouseMove(event: any) {
-    if (selectedPosition) {
+    if (centerOfSelection) {
       const radius = Math.sqrt(
-        Math.pow(selectedPosition[0] - event.latlng.lat, 2) +
-        Math.pow(selectedPosition[1] - event.latlng.lng, 2)
+        Math.pow(centerOfSelection.lat - event.latlng.lat, 2) +
+        Math.pow(centerOfSelection.lng - event.latlng.lng, 2)
       );
       setSelectedRadius(radius);
     }
   }
+
+  const onPushToSelectedLocation = useCallback((location: LocationData) => {
+    setSelectedPosition(null);
+    onSelectNewLocation(location);
+  }, [onSelectNewLocation]);
 
   useMapEvents({
     click: handleMapClick,
@@ -113,30 +68,46 @@ function MapContent() {
       />
       <MarkerClusterGroup>
         {
-          getUsersInAreaMockResponse.users.map((user) => (
-            <Marker position={
-              new LatLng(user.lat, user.lng)
-            }>
-              <Popup>
-                {user.id}
-              </Popup>
-            </Marker>
+          usersToDisplay?.map((user) => (
+            <Marker position={user} />
           ))
         }
       </MarkerClusterGroup>
-      {/* <Marker position={
-        otwockLocation
-      }>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker> */}
-      {selectedPosition && selectedRadius && (
-        <Circle center={selectedPosition} radius={selectedRadius * 50000} />
-      )}
-      {selectedArea.map((area) => (
-        <Circle color='red' center={area.center} radius={area.radius * 50000} />
-      ))}
+      {
+        locationsToDisplay?.map((location) => (
+          <Marker position={{
+            lat: Number(location.lat),
+            lng: Number(location.lon),
+          }} />
+        ))
+      }
+      {
+        selectedPosition && (
+          <CustomPopupMarker
+            position={selectedPosition}
+            onPushToSelectedLocation={onPushToSelectedLocation}
+            onSelectArea={setCenterOfSelection}
+            defaultOpen
+          />
+        )
+      }
+      {
+        (areasToDisplay as CircleArea[])?.map((area) => (
+          <Circle
+            color='red'
+            center={area.center}
+            radius={area.radius * 50000}
+          />
+        ))
+      }
+      {
+        centerOfSelection && selectedRadius && (
+          <Circle
+            center={centerOfSelection}
+            radius={selectedRadius * 50000}
+          />
+        )
+      }
     </>
   )
 }
