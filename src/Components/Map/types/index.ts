@@ -1,7 +1,7 @@
 import { LatLngLiteral } from "leaflet";
 
 export interface CircleArea {
-  center: LatLngLiteral;
+  center: LocationData;
   radius: number;
 }
 
@@ -18,7 +18,7 @@ export interface CustomArea {
 
 export interface Area {
   type: "circle" | "square" | "custom";
-  area: CircleArea | SquareArea | CustomArea;
+  area: CircleArea; // | SquareArea | CustomArea;
 }
 
 export interface Address {

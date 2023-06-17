@@ -3,10 +3,11 @@ import { useCallback, useState } from 'react'
 import './App.css'
 import Map from './Components/Map/Map';
 import { LatLng } from 'leaflet';
-import { AlertInterface, Area, LocationData } from './Components/Map/types';
+import { AlertInterface, Area, CircleArea, LocationData } from './Components/Map/types';
 import PLusButton from './Components/plusButton';
 import Searcher from './Components/Searcher/Searcher';
 import LeftMenu from './Components/leftMenu';
+import { areCircleAreasDifferent } from './Utils/areCircleAreasDifferent';
 
 const MapHolder = styled.div`
   width: 700px;
@@ -88,7 +89,6 @@ const TopBar = styled.div`
 
 const OtwockLocation = new LatLng(52.1, 21.3);
 
-
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -103,9 +103,16 @@ function App() {
     setLocationsToDisplay(newLocations);
   }, [locationsToDisplay]);
 
+  const deleteArea = useCallback((area: Area) => {
+    const newAreas = selectedAreas.filter((ar) => areCircleAreasDifferent(ar.area, area.area));
+    setSelectedAreas(newAreas);
+  }, [selectedAreas]);
+
   return (
     <>
       <LeftMenu
+        areasData={selectedAreas}
+        onDeleteArea={deleteArea}
         locationsData={locationsToDisplay}
         onDeleteLocation={deleteLocation}
         open={isMenuOpen}

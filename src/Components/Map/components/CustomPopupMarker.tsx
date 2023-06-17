@@ -8,12 +8,12 @@ import { LocationData } from '../types';
 type CustomPopupProps = MarkerProps & {
   defaultOpen?: boolean;
   onPushToSelectedLocation: (location: LocationData) => void;
-  onSelectArea: (center: LatLngLiteral) => void;
+  onSelectArea: (center: LocationData) => void;
 };
 
 function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLocation, onSelectArea, ...rest }: CustomPopupProps) {
   const popupRef = useRef(null);
-  const [center, setCenter] = useState<LatLngLiteral | null>(null);
+  // const [center, setCenter] = useState<LatLngLiteral | null>(null);
   const [locationData, setLocationData] = useState<LocationData | null>(null);
 
   useEffect(() => {
@@ -22,7 +22,6 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
 
       const location = popupRef.current?.getLatLng();
 
-      setCenter(location);
       getAddressFromLatLng(location).then(setLocationData);
     }
   }, [defaultOpen]);
@@ -34,8 +33,8 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
 
   const onSelectAreaClick = useCallback((event: any) => {
     event.stopPropagation();
-    onSelectArea(center!);
-  }, [center, onSelectArea]);
+    onSelectArea(locationData!);
+  }, [locationData, onSelectArea]);
 
   return (
     <Marker ref={popupRef} {...rest}>

@@ -16,8 +16,7 @@ const LocationCard = ({
         alignItems: "center",
         padding: "0.75rem",
         borderRadius: "8px",
-        backgroundColor: "#f5f5f5",
-        height: "25px",
+        backgroundColor: "#f3dabe",
         marginBottom: "0.5rem",
       }}
     >
@@ -26,14 +25,14 @@ const LocationCard = ({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          height: "100%",
+          // height: "100%",
           padding: "0.25rem",
         }}
       >
         <Typography
           sx={{
-            height: "100%",
-            overflow: "hidden",
+            // height: "100%",
+            // overflow: "hidden",
             textAlign: "left",
           }}
         >

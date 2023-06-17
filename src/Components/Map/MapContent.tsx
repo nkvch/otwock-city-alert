@@ -1,4 +1,4 @@
-import { LatLngLiteral } from 'leaflet';
+import { LatLng, LatLngLiteral } from 'leaflet';
 import { useCallback, useState } from 'react';
 import { Circle, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -20,7 +20,7 @@ function MapContent(props: MapContentProps) {
 
   const [selectedPosition, setSelectedPosition] = useState<LatLngLiteral | null>(null);
 
-  const [centerOfSelection, setCenterOfSelection] = useState<LatLngLiteral | null>(null);
+  const [centerOfSelection, setCenterOfSelection] = useState<LocationData | null>(null);
   const [selectedRadius, setSelectedRadius] = useState<number | null>(null);
 
 
@@ -30,11 +30,11 @@ function MapContent(props: MapContentProps) {
         lat: event.latlng.lat,
         lng: event.latlng.lng,
       });
-    } else if (selectedPosition && selectedRadius) {
+    } else if (selectedPosition && selectedRadius && centerOfSelection) {
       onSelectNewArea({
         type: 'circle',
         area: {
-          center: selectedPosition,
+          center: centerOfSelection,
           radius: selectedRadius,
         }
       });
@@ -46,10 +46,9 @@ function MapContent(props: MapContentProps) {
 
   function handleMapMouseMove(event: any) {
     if (centerOfSelection) {
-      const radius = Math.sqrt(
-        Math.pow(centerOfSelection.lat - event.latlng.lat, 2) +
-        Math.pow(centerOfSelection.lng - event.latlng.lng, 2)
-      );
+      const point1 = new LatLng(Number(centerOfSelection.lat), Number(centerOfSelection.lon));
+      const point2 = new LatLng(event.latlng.lat, event.latlng.lng);
+      const radius = point1.distanceTo(point2);
       setSelectedRadius(radius);
     }
   }
@@ -70,8 +69,11 @@ function MapContent(props: MapContentProps) {
         const circleArea = area.area as CircleArea;
         return (
           <Circle
-            center={circleArea.center}
-            radius={circleArea.radius * 50000}
+            center={{
+              lat: Number(circleArea.center.lat),
+              lng: Number(circleArea.center.lon),
+            }}
+            radius={circleArea.radius}
           />
         );
       default:
@@ -119,8 +121,11 @@ function MapContent(props: MapContentProps) {
         centerOfSelection && selectedRadius && (
           <Circle
             color='gray'
-            center={centerOfSelection}
-            radius={selectedRadius * 50000}
+            center={{
+              lat: Number(centerOfSelection.lat),
+              lng: Number(centerOfSelection.lon),
+            }}
+            radius={selectedRadius}
           />
         )
       }

@@ -13,13 +13,15 @@ import {
   Icon,
 } from "@mui/material";
 import React, { useState } from "react";
-import { AlertInterface, LocationData } from "../Map/types";
+import { AlertInterface, Area, LocationData } from "../Map/types";
 import LocationCard from "../locationCard";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import CarCrashIcon from "@mui/icons-material/CarCrash";
 import ParkIcon from "@mui/icons-material/Park";
 import PowerOffIcon from "@mui/icons-material/PowerOff";
 import BathtubIcon from "@mui/icons-material/Bathtub";
+import AreaCard from "../AreaCard/AreaCard";
+import styled from "@emotion/styled";
 
 interface Props {
   open: boolean;
@@ -27,8 +29,15 @@ interface Props {
   alert: AlertInterface;
   locationsData: LocationData[];
   onDeleteLocation: (location: LocationData) => void;
+  areasData: Area[];
+  onDeleteArea: (area: Area) => void;
   // onSave: (alert: Alert) => void;
 }
+
+const MenuTitle = styled(Typography)`
+  text-align: start;
+  margin-bottom: 1rem;
+`;
 
 const LabeledIcon = ({
   icon,
@@ -55,7 +64,7 @@ const LabeledIcon = ({
   );
 };
 
-const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Props) => {
+const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation, onDeleteArea, areasData }: Props) => {
   const handleMenuClose = () => {
     setOpen(false);
   };
@@ -136,7 +145,7 @@ const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Pro
             height: "80%",
             borderRadius: "5%",
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-            padding: "1rem",
+            padding: "2rem",
             zIndex: 1000,
             top: "10%",
             left: "20px",
@@ -153,6 +162,7 @@ const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Pro
               <CloseIcon />
             </IconButton>
           </Box>
+          <MenuTitle variant="h5">Nowy alert</MenuTitle>
           <Box
             sx={{
               display: "flex",
@@ -241,7 +251,8 @@ const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Pro
             sx={{
               width: "100%",
               justifyContent: "center",
-              height: "110px",
+              marginTop: "1rem",
+              maxHeight: "200px",
               overflowY: "auto",
               overflowX: "hidden",
               borderBottom: "1px solid gray",
@@ -259,8 +270,21 @@ const LeftMenu = ({ open, setOpen, alert, locationsData, onDeleteLocation }: Pro
                 />
               );
             })}
+            {
+              areasData.map((area, index) => {
+                return (
+                  <AreaCard
+                    areaData={area}
+                    key={index}
+                    handleDeleteArea={() => {
+                      onDeleteArea(area);
+                    }}
+                  />
+                );
+              }
+              )
+            }
           </Box>
-
           {currentAlert.isUrgent ? (
             <Box
               sx={{

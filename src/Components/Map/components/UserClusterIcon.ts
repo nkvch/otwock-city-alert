@@ -3,10 +3,6 @@ import { divIcon, point } from "leaflet";
 export const createUserCluserIcon = (cluster: any) => {
   const count = cluster.getChildCount();
 
-  const size = count < 100 ? 'small' : count < 1000 ? 'medium' : 'large';
-
-  console.log(count);
-
   return divIcon({
     html: `
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
