@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import LeftMenu from "../leftMenu";
 
 interface Address {
   id: number;
@@ -41,72 +42,29 @@ const AutocompleteModal = () => {
 
   return (
     <>
-      <IconButton
-        onClick={handleOpen}
-        sx={{
-          backgroundColor: "#f5f5f5",
-          border: "1px solid #ccc",
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-        }}
-      >
-        <AddIcon />
-        <Typography
+      {!isOpen ? (
+        <IconButton
+          onClick={handleOpen}
           sx={{
-            fontSize: "0.8rem",
-          }}
-        >
-          Dodaj
-        </Typography>
-      </IconButton>
-      <Modal open={isOpen} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#fff",
-            padding: "1rem",
-            borderRadius: "10px",
+            backgroundColor: "#f5f5f5",
+            border: "1px solid #ccc",
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-            width: "500px",
+            borderRadius: "32px",
+            padding: "0.25rem 1rem",
           }}
         >
-          <Autocomplete
-            multiple
-            options={mockAddresses}
-            getOptionLabel={(option) => option.name}
-            value={selectedAddresses}
-            onChange={handleSelectAddress}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search for an address"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-              />
-            )}
-            renderOption={(props, option, { selected }) => (
-              <ListItem {...props}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "0.5rem",
-                    borderBottom: "1px solid #ccc",
-                    width: "100%",
-                    backgroundColor: selected ? "#eee" : "transparent",
-                  }}
-                >
-                  <Typography>{option.name}</Typography>
-                </Box>
-              </ListItem>
-            )}
-          />
-        </Box>
-      </Modal>
+          <AddIcon />
+          <Typography
+            sx={{
+              fontSize: "0.8rem",
+            }}
+          >
+            Dodaj
+          </Typography>
+        </IconButton>
+      ) : (
+        <LeftMenu open={isOpen} setOpen={setIsOpen} />
+      )}
     </>
   );
 };
