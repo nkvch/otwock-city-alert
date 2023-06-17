@@ -5,6 +5,7 @@ import Map from './Components/Map/Map';
 import { LatLng } from 'leaflet';
 import { Area, LocationData } from './Components/Map/types';
 import PLusButton from './Components/plusButton';
+import Searcher from './Components/Searcher/Searcher';
 
 const MapHolder = styled.div`
   width: 700px;
@@ -77,6 +78,13 @@ const getUsersInAreaMockResponse = {
   ],
 };
 
+const TopBar = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 220px;
+  z-index: 1000;
+`;
+
 const OtwockLocation = new LatLng(52.1, 21.3);
 
 
@@ -92,6 +100,11 @@ function App() {
   return (
     <>
       <PLusButton />
+      <TopBar>
+        <Searcher
+          onSelectLocation={onSelectNewLocation}
+        />
+      </TopBar>
       <Map
         center={OtwockLocation}
         scrollWheelZoom={true}

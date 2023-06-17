@@ -1,9 +1,11 @@
-import { LatLngLiteral } from 'leaflet';
+import { LatLngLiteral, point, divIcon } from 'leaflet';
 import { useCallback, useState } from 'react';
 import { Circle, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import CustomPopupMarker from './components/CustomPopupMarker';
 import { CircleArea, CustomArea, LocationData, SquareArea } from './types';
+import UserMarker from './components/UserMarker';
+import { createUserCluserIcon } from './components/UserClusterIcon';
 // import 'leaflet/dist/leaflet.css';
 
 export interface MapContentProps {
@@ -63,13 +65,15 @@ function MapContent(props: MapContentProps) {
   return (
     <>
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Icon by <a href="https://freeicons.io/profile/3335">MD Badsha Meah</a> on <a href="https://freeicons.io">freeicons.io</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MarkerClusterGroup>
+      <MarkerClusterGroup
+        iconCreateFunction={createUserCluserIcon}
+      >
         {
           usersToDisplay?.map((user) => (
-            <Marker position={user} />
+            <UserMarker position={user} />
           ))
         }
       </MarkerClusterGroup>

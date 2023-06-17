@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Marker, MarkerProps, Popup } from 'react-leaflet';
 import { LatLngLiteral } from 'leaflet';
-import { getAddressFromLatLng } from '../../../Utils/getAddressFromLocation';
+import { getAddressFromLatLng } from '../../../Queries/getAddressFromLocation';
 import { LocationData } from '../types';
 
 type CustomPopupProps = MarkerProps & {
