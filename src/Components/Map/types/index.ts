@@ -24,7 +24,7 @@ export interface Address {
   town: string;
   county: string;
   state: string;
-  'ISO3166-2-lvl4': string;
+  "ISO3166-2-lvl4": string;
   postcode: string;
   country: string;
   country_code: string;
@@ -44,6 +44,18 @@ export interface LocationData {
   addresstype: string;
   name: string;
   display_name: string;
-  address: Address;
+  address?: Address;
   boundingbox: string[];
+}
+
+export interface AlertInterface {
+  id: number;
+  isUrgent: boolean;
+  categoryId: number | null;
+  addresses: Address[];
+  zoneIds: number[];
+  dateOfCreation: Date;
+  dateOfStart: Date;
+  dateOfEnd: Date;
+  body: string;
 }
