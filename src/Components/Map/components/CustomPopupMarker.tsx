@@ -19,7 +19,7 @@ const PopupButton = styled(Button)`
   margin: 0.2rem;
   height: 80px;
   width: 80px;
-  color: #FFF;
+  color: #fff;
   font-weight: 600;
   border-radius: 50%;
   display: flex;
@@ -48,7 +48,13 @@ const SelectAreaButton = styled(PopupButton)`
   }
 `;
 
-function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLocation, onSelectArea, ...rest }: CustomPopupProps) {
+function CustomPopupMarker({
+  defaultOpen = false,
+  children,
+  onPushToSelectedLocation,
+  onSelectArea,
+  ...rest
+}: CustomPopupProps) {
   const popupRef = useRef(null);
   const [locationData, setLocationData] = useState<LocationData | null>(null);
 
@@ -62,15 +68,21 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
     }
   }, [defaultOpen]);
 
-  const onAddPointClick = useCallback((event: any) => {
-    event.stopPropagation();
-    onPushToSelectedLocation(locationData!);
-  }, [locationData, onPushToSelectedLocation]);
+  const onAddPointClick = useCallback(
+    (event: any) => {
+      event.stopPropagation();
+      onPushToSelectedLocation(locationData!);
+    },
+    [locationData, onPushToSelectedLocation]
+  );
 
-  const onSelectAreaClick = useCallback((event: any) => {
-    event.stopPropagation();
-    onSelectArea(locationData!);
-  }, [locationData, onSelectArea]);
+  const onSelectAreaClick = useCallback(
+    (event: any) => {
+      event.stopPropagation();
+      onSelectArea(locationData!);
+    },
+    [locationData, onSelectArea]
+  );
 
   return (
     <Marker ref={popupRef} {...rest}>
@@ -78,15 +90,18 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
         <Typography
           variant="h6"
           textAlign="center"
-          sx={{ flexGrow: 1, marginBottom: "1rem" }}
+          sx={{
+            flexGrow: 1,
+            marginBottom: '1rem',
+          }}
         >
-          {locationData?.display_name ?? "Ładowanie..."}
+          {locationData?.display_name ?? 'Ładowanie...'}
         </Typography>
         <Box
           display="flex"
-          justifyContent="space-between"
+          justifyContent="space-around"
           sx={{
-            padding: "0.2rem",
+            padding: '0.2rem',
           }}
         >
           <AddLocationButton

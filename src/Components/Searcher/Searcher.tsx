@@ -1,14 +1,16 @@
-import styled from "@emotion/styled";
-import { Autocomplete, TextField } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { searchOpenStreetMap } from "../../Queries/searchOpenStreetMap";
-import React, { useCallback, useState } from "react";
-import { LocationData } from "../Map/types";
+import styled from '@emotion/styled';
+import { Autocomplete, TextField } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { searchOpenStreetMap } from '../../Queries/searchOpenStreetMap';
+import React, { useCallback, useState } from 'react';
+import { LocationData } from '../Map/types';
 
 const StyledAutocomplete = styled(Autocomplete)`
   background-color: white;
   border-radius: 28px;
   width: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 
   .MuiOutlinedInput-root {
     border-radius: 28px;
@@ -24,9 +26,9 @@ export interface SearcherProps {
 
 function Searcher(props: SearcherProps) {
   const { onSelectLocation } = props;
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('');
 
-  const { data, isFetching } = useQuery(["locations", searchValue], () =>
+  const { data, isFetching } = useQuery(['locations', searchValue], () =>
     searchOpenStreetMap({
       q: searchValue,
     })
@@ -40,7 +42,7 @@ function Searcher(props: SearcherProps) {
         );
 
         if (location) {
-          setSearchValue("");
+          setSearchValue('');
           onSelectLocation(location);
         }
       }
@@ -50,7 +52,6 @@ function Searcher(props: SearcherProps) {
 
   return (
     <StyledAutocomplete
-      
       loading={isFetching}
       id="free-solo-2-demo"
       options={data?.map((location) => location.display_name) || []}
@@ -58,7 +59,7 @@ function Searcher(props: SearcherProps) {
       onChange={onSelectOption}
       renderInput={(params) => (
         <TextField
-        className="target-for-scroll"
+          className="target-for-scroll"
           {...params}
           label="Szukaj..."
           onChange={(event) => setSearchValue(event.target.value)}

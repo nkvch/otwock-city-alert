@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
-import BathtubIcon from "@mui/icons-material/Bathtub";
-import CarCrashIcon from "@mui/icons-material/CarCrash";
-import CloseIcon from "@mui/icons-material/Close";
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import ParkIcon from "@mui/icons-material/Park";
-import PowerOffIcon from "@mui/icons-material/PowerOff";
+import styled from '@emotion/styled';
+import BathtubIcon from '@mui/icons-material/Bathtub';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
+import CloseIcon from '@mui/icons-material/Close';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import ParkIcon from '@mui/icons-material/Park';
+import PowerOffIcon from '@mui/icons-material/PowerOff';
 import {
   Box,
   Button,
@@ -14,13 +14,13 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import AreaCard from "../AreaCard/AreaCard";
-import { AlertInterface, Area, LocationData } from "../Map/types";
-import Searcher from "../Searcher/Searcher";
-import LocationCard from "../locationCard";
-import CheckIcon from "@mui/icons-material/Check";
+} from '@mui/material';
+import React, { useState } from 'react';
+import AreaCard from '../AreaCard/AreaCard';
+import { AlertInterface, Area, LocationData } from '../Map/types';
+import Searcher from '../Searcher/Searcher';
+import LocationCard from '../locationCard';
+import CheckIcon from '@mui/icons-material/Check';
 
 interface Props {
   open: boolean;
@@ -86,15 +86,15 @@ const LabeledIcon = ({
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
       }}
     >
       {icon}
-      <Typography sx={{ marginLeft: "0.25rem", fontSize: "0.75rem" }}>
+      <Typography sx={{ marginLeft: '0.25rem', fontSize: '0.75rem' }}>
         {label}
       </Typography>
     </Box>
@@ -118,7 +118,7 @@ const LeftMenu = ({
   };
   const styles = {
     root: {
-      display: "flex",
+      display: 'flex',
     },
     content: {
       flexGrow: 1,
@@ -137,45 +137,45 @@ const LeftMenu = ({
   const mockAlertCategories = [
     {
       id: 1,
-      name: "Pożar",
-      activeBackground: "#c26b02",
-      inactiveBackground: "#c26b0290",
+      name: 'Pożar',
+      activeBackground: '#c26b02',
+      inactiveBackground: '#c26b0290',
       chosen: false,
       isUrgent: true,
       icon: <LocalFireDepartmentIcon />,
     },
     {
       id: 2,
-      name: "Wypadek na drodze",
-      activeBackground: "#ff0000",
-      inactiveBackground: "#ff6666",
+      name: 'Wypadek na drodze',
+      activeBackground: '#ff0000',
+      inactiveBackground: '#ff6666',
       chosen: false,
       isUrgent: true,
       icon: <CarCrashIcon />,
     },
     {
       id: 3,
-      name: "Drzewo na drodze",
-      activeBackground: "#098217",
-      inactiveBackground: "#09821790",
+      name: 'Drzewo na drodze',
+      activeBackground: '#098217',
+      inactiveBackground: '#09821790',
       chosen: false,
       isUrgent: true,
       icon: <ParkIcon />,
     },
     {
       id: 4,
-      name: "przerwa w dostawie prądu",
-      activeBackground: "#fcc612",
-      inactiveBackground: "#fcc61290",
+      name: 'przerwa w dostawie prądu',
+      activeBackground: '#fcc612',
+      inactiveBackground: '#fcc61290',
       chosen: false,
       isUrgent: false,
       icon: <PowerOffIcon />,
     },
     {
       id: 5,
-      name: "przerwa w dostawie wody",
-      activeBackground: "#2356c4",
-      inactiveBackground: "#2356c490",
+      name: 'przerwa w dostawie wody',
+      activeBackground: '#2356c4',
+      inactiveBackground: '#2356c490',
       chosen: false,
       isUrgent: false,
       icon: <BathtubIcon />,
@@ -199,39 +199,39 @@ const LeftMenu = ({
       dataToSend.dateOfEnd = new Date(
         dataToSend.dateOfStart.getTime() + numberOfHours * 60 * 60 * 1000
       );
-    console.log(dataToSend);
   };
+
   return (
     <div style={styles.root}>
       {open ? (
         <AnimatedBox
           className={currentClass}
           sx={{
-            position: "fixed",
-            width: "35%",
-            backgroundColor: "#f5f5f5",
-            height: "80%",
-            borderRadius: "5%",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
-            padding: "2rem",
+            position: 'fixed',
+            width: '35%',
+            backgroundColor: '#f5f5f5',
+            height: '80%',
+            borderRadius: '5%',
+            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+            padding: '2rem',
             zIndex: 10,
-            top: "10%",
-            left: "20px",
+            top: '10%',
+            left: '20px',
           }}
         >
           <Box
             className="target-for-scroll"
             sx={{
-              overflowY: "auto",
-              overflowX: "hidden",
-              height: "100%",
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              height: '100%',
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
             >
               <MenuTitle variant="h5">Nowy alert</MenuTitle>
@@ -242,11 +242,11 @@ const LeftMenu = ({
 
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
+                display: 'flex',
+                flexDirection: 'row',
               }}
             >
-              <Typography color={"black"} variant="h6">
+              <Typography color={'black'} variant="h6">
                 Pilne
               </Typography>
               <Switch
@@ -262,14 +262,14 @@ const LeftMenu = ({
             </Box>
             <Divider
               sx={{
-                margin: "0.5rem",
+                margin: '0.5rem',
               }}
             />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
               }}
             >
               {mockAlertCategories.map((category, index) => {
@@ -281,18 +281,18 @@ const LeftMenu = ({
                     }
                     key={index}
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "0.5rem",
-                      borderBottom: "1px solid #ccc",
-                      cursor: "pointer",
-                      width: "fit-content",
-                      color: "white",
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '0.5rem',
+                      borderBottom: '1px solid #ccc',
+                      cursor: 'pointer',
+                      width: 'fit-content',
+                      color: 'white',
                       backgroundColor:
                         category.id === currentAlert.categoryId
                           ? category.activeBackground
                           : category.inactiveBackground,
-                      "&:hover": {
+                      '&:hover': {
                         backgroundColor: category.activeBackground,
                       },
                     }}
@@ -326,7 +326,7 @@ const LeftMenu = ({
               })}
             </Box>
             <Box
-              sx={{ display: "flex", flexDirection: "row", margin: "1rem 0" }}
+              sx={{ display: 'flex', flexDirection: 'row', margin: '1rem 0' }}
             >
               <StyledSearcher
                 onSelectLocation={(location) => {
@@ -336,11 +336,11 @@ const LeftMenu = ({
             </Box>
             <Box
               sx={{
-                width: "100%",
-                justifyContent: "center",
-                marginTop: "1rem",
-                borderBottom: "1px solid gray",
-                borderRadius: "5px",
+                width: '100%',
+                justifyContent: 'center',
+                marginTop: '1rem',
+                borderBottom: '1px solid gray',
+                borderRadius: '5px',
               }}
             >
               {locationsData.map((location, index) => {
@@ -373,9 +373,9 @@ const LeftMenu = ({
             {currentAlert.isUrgent ? (
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
                 }}
               >
                 <TextField
@@ -397,16 +397,16 @@ const LeftMenu = ({
             ) : (
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <TextField
@@ -430,9 +430,9 @@ const LeftMenu = ({
                 </Box>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <TextField
@@ -471,15 +471,15 @@ const LeftMenu = ({
               rows={3}
               fullWidth
             />
-            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
               <Button
                 variant="contained"
                 sx={{
-                  width: "30%",
-                  borderRadius: "28px",
-                  padding: "0.5rem",
-                  backgroundColor: "#3f51b5",
-                  margin: "1rem 0",
+                  width: '30%',
+                  borderRadius: '28px',
+                  padding: '0.5rem',
+                  backgroundColor: '#3f51b5',
+                  margin: '1rem 0',
                 }}
                 startIcon={<CheckIcon />}
                 onClick={() => {
