@@ -1,9 +1,11 @@
-import styled from '@emotion/styled';
-import { Autocomplete, TextField } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
-import { searchOpenStreetMap } from '../../Queries/searchOpenStreetMap';
-import { LocationData } from '../Map/types';
+import styled from "@emotion/styled";
+import { Autocomplete, TextField, Typography, Box } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
+import { searchOpenStreetMap } from "../../Queries/searchOpenStreetMap";
+import { LocationData } from "../Map/types";
+
+import SearchIcon from "@mui/icons-material/Search";
 
 const StyledAutocomplete = styled(Autocomplete)`
   background-color: white;
@@ -26,9 +28,9 @@ export interface SearcherProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Searcher(props: SearcherProps) {
   const { onSelectLocation, ...rest } = props;
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>("");
 
-  const { data, isFetching } = useQuery(['locations', searchValue], () =>
+  const { data, isFetching } = useQuery(["locations", searchValue], () =>
     searchOpenStreetMap({
       q: searchValue,
     })
@@ -42,13 +44,37 @@ function Searcher(props: SearcherProps) {
         );
 
         if (location) {
-          setSearchValue('');
+          setSearchValue("");
           onSelectLocation(location);
         }
       }
     },
     [data, onSelectLocation]
   );
+  const LabeledIcon = ({
+    icon,
+    label,
+  }: {
+    icon: React.ReactNode;
+    label: string;
+  }) => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        {icon}
+        <Typography sx={{ marginLeft: "0.25rem", fontSize: "0.75rem" }}>
+          {label}
+        </Typography>
+      </Box>
+    );
+  };
 
   return (
     <StyledAutocomplete
@@ -62,7 +88,7 @@ function Searcher(props: SearcherProps) {
         <TextField
           className="target-for-scroll"
           {...params}
-          label="Szukaj..."
+          label={<LabeledIcon icon={<SearchIcon />} label="Szukaj" />}
           onChange={(event) => setSearchValue(event.target.value)}
         />
       )}
