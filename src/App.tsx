@@ -20,7 +20,7 @@ const TopBar = styled.div`
   position: fixed;
   top: 20px;
   left: 20px;
-  z-index: 1000;
+  z-index: 500;
   display: flex;
   transition: all 0.3s ease-in-out;
   gap: 10px;

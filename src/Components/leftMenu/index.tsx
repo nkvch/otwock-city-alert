@@ -35,6 +35,16 @@ interface Props {
 
 const AnimatedBox = styled(Box)`
   animation: 0.5s ease-out 0s 1 slideInFromLeft;
+  position: fixed;
+  width: 35%;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  z-index: 1000;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
   @keyframes slideInFromLeft {
     0% {
       transform: translateX(-100%);
@@ -62,20 +72,24 @@ const AnimatedBox = styled(Box)`
     animation: slideOutToRight 0.3s ease-out 0s 1 forwards;
   }
 `;
+
 const MenuTitle = styled(Typography)`
   text-align: start;
   margin-bottom: 1rem;
 `;
+
 const StyledSearcher = styled(Searcher)`
-  background-color: white;
   border-radius: 10px !important;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+  width: 100%;
   .MuiOutlinedInput-root {
-    border-radius: 0;
+    border-radius: 10px !important;
     input {
       padding-left: 1rem !important;
     }
   }
 `;
+
 const LabeledIcon = ({
   icon,
   label,
@@ -110,12 +124,6 @@ const LeftMenu = ({
   onDeleteArea,
   areasData,
 }: Props) => {
-  const handleMenuClose = () => {
-    setCurrentClass("slide-out");
-    setTimeout(() => {
-      setOpen(false);
-    }, 300);
-  };
   const styles = {
     root: {
       display: 'flex',
@@ -139,7 +147,7 @@ const LeftMenu = ({
       id: 1,
       name: 'Pożar',
       activeBackground: '#c26b02',
-      inactiveBackground: '#c26b0290',
+      inactiveBackground: '#c26b0270',
       chosen: false,
       isUrgent: true,
       icon: <LocalFireDepartmentIcon />,
@@ -148,7 +156,7 @@ const LeftMenu = ({
       id: 2,
       name: 'Wypadek na drodze',
       activeBackground: '#ff0000',
-      inactiveBackground: '#ff6666',
+      inactiveBackground: '#ff000070',
       chosen: false,
       isUrgent: true,
       icon: <CarCrashIcon />,
@@ -157,7 +165,7 @@ const LeftMenu = ({
       id: 3,
       name: 'Drzewo na drodze',
       activeBackground: '#098217',
-      inactiveBackground: '#09821790',
+      inactiveBackground: '#09821770',
       chosen: false,
       isUrgent: true,
       icon: <ParkIcon />,
@@ -166,7 +174,7 @@ const LeftMenu = ({
       id: 4,
       name: 'przerwa w dostawie prądu',
       activeBackground: '#fcc612',
-      inactiveBackground: '#fcc61290',
+      inactiveBackground: '#fcc61270',
       chosen: false,
       isUrgent: false,
       icon: <PowerOffIcon />,
@@ -175,7 +183,7 @@ const LeftMenu = ({
       id: 5,
       name: 'przerwa w dostawie wody',
       activeBackground: '#2356c4',
-      inactiveBackground: '#2356c490',
+      inactiveBackground: '#2356c470',
       chosen: false,
       isUrgent: false,
       icon: <BathtubIcon />,
@@ -183,7 +191,7 @@ const LeftMenu = ({
   ];
 
   const [numberOfHours, setNumberOfHours] = useState<number>(0);
-  const [currentClass, setCurrentClass] = useState("slide-in");
+  const [currentClass, setCurrentClass] = useState('slide-in');
   const onSubmit = () => {
     const dataToSend = {
       createdAt: currentAlert.dateOfCreation,
@@ -201,24 +209,15 @@ const LeftMenu = ({
       );
   };
 
+  const handleMenuClose = () => {
+    setCurrentClass('slide-out');
+    setOpen(false);
+  };
+
   return (
     <div style={styles.root}>
       {open ? (
-        <AnimatedBox
-          className={currentClass}
-          sx={{
-            position: 'fixed',
-            width: '35%',
-            backgroundColor: '#f5f5f5',
-            height: '80%',
-            borderRadius: '5%',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-            padding: '2rem',
-            zIndex: 10,
-            top: '10%',
-            left: '20px',
-          }}
-        >
+        <AnimatedBox className={currentClass}>
           <Box
             className="target-for-scroll"
             sx={{
@@ -270,6 +269,7 @@ const LeftMenu = ({
                 display: 'flex',
                 flexDirection: 'row',
                 flexWrap: 'wrap',
+                gap: '0.5rem',
               }}
             >
               {mockAlertCategories.map((category, index) => {
@@ -331,6 +331,9 @@ const LeftMenu = ({
               <StyledSearcher
                 onSelectLocation={(location) => {
                   setLocationsData([...locationsData, location]);
+                }}
+                sx={{
+                  width: '100%',
                 }}
               />
             </Box>
