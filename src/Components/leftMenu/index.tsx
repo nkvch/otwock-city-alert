@@ -33,6 +33,35 @@ interface Props {
   // onSave: (alert: Alert) => void;
 }
 
+const AnimatedBox = styled(Box)`
+  animation: 0.5s ease-out 0s 1 slideInFromLeft;
+  @keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideOutToRight {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  .slide-in {
+    animation: slideInFromLeft 0.3s ease-out 0s 1 forwards;
+  }
+
+  .slide-out {
+    animation: slideOutToRight 0.3s ease-out 0s 1 forwards;
+  }
+`;
 const MenuTitle = styled(Typography)`
   text-align: start;
   margin-bottom: 1rem;
@@ -82,7 +111,10 @@ const LeftMenu = ({
   areasData,
 }: Props) => {
   const handleMenuClose = () => {
-    setOpen(false);
+    setCurrentClass("slide-out");
+    setTimeout(() => {
+      setOpen(false);
+    }, 300);
   };
   const styles = {
     root: {
@@ -151,6 +183,7 @@ const LeftMenu = ({
   ];
 
   const [numberOfHours, setNumberOfHours] = useState<number>(0);
+  const [currentClass, setCurrentClass] = useState("slide-in");
   const onSubmit = () => {
     const dataToSend = {
       createdAt: currentAlert.dateOfCreation,
@@ -171,7 +204,8 @@ const LeftMenu = ({
   return (
     <div style={styles.root}>
       {open ? (
-        <Box
+        <AnimatedBox
+          className={currentClass}
           sx={{
             position: "fixed",
             width: "35%",
@@ -457,7 +491,7 @@ const LeftMenu = ({
               </Button>
             </Box>
           </Box>
-        </Box>
+        </AnimatedBox>
       ) : null}
     </div>
   );
