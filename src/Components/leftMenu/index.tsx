@@ -339,7 +339,6 @@ const LeftMenu = ({
                 width: '100%',
                 justifyContent: 'center',
                 marginTop: '1rem',
-                borderBottom: '1px solid gray',
                 borderRadius: '5px',
               }}
             >
