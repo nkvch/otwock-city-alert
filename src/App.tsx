@@ -8,6 +8,8 @@ import PLusButton from './Components/plusButton';
 import Searcher from './Components/Searcher/Searcher';
 import LeftMenu from './Components/leftMenu';
 import { areCircleAreasDifferent } from './Utils/areCircleAreasDifferent';
+import { useQuery } from '@tanstack/react-query';
+import { getUsersLocations } from './Queries/getUsersLocations';
 
 const MapHolder = styled.div`
   width: 700px;
@@ -92,6 +94,13 @@ const OtwockLocation = new LatLng(52.1, 21.3);
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const {
+    data: usersData,
+    isLoading: isUsersLoading,
+  } = useQuery(['users'], getUsersLocations);
+
+  console.log(usersData);
+
   const [selectedAreas, setSelectedAreas] = useState<Area[]>([]);
   const [locationsToDisplay, setLocationsToDisplay] = useState<LocationData[]>([]);
 
@@ -129,7 +138,7 @@ function App() {
         content={{
           onSelectNewArea,
           areasToDisplay: selectedAreas,
-          usersToDisplay: getUsersInAreaMockResponse.users,
+          usersToDisplay: usersData ?? [],
           locationsToDisplay,
           onSelectNewLocation,
         }}

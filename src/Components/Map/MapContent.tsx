@@ -1,11 +1,14 @@
 import { LatLng, LatLngLiteral } from 'leaflet';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Circle, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import CustomPopupMarker from './components/CustomPopupMarker';
 import { createUserCluserIcon } from './components/UserClusterIcon';
 import UserMarker from './components/UserMarker';
 import { Area, CircleArea, LocationData } from './types';
+import { useQuery } from '@tanstack/react-query';
+import { getUsersLocations } from '../../Queries/getUsersLocations';
+import AlertLocationMarker from './components/AlertLocationMarker';
 
 export interface MapContentProps {
   usersToDisplay?: LatLngLiteral[];
@@ -23,6 +26,20 @@ function MapContent(props: MapContentProps) {
   const [centerOfSelection, setCenterOfSelection] = useState<LocationData | null>(null);
   const [selectedRadius, setSelectedRadius] = useState<number | null>(null);
 
+  const [TODO_REMOVE_usersQueue, setTODO_REMOVE_usersQueue] = useState<any[]>([]);
+
+  // const {
+  //   data: TODO_REMOVE_usersData,
+  // } = useQuery(['users'], getUsersLocations);
+
+  // TODO_REMOVE
+  // useEffect(() => {
+  //   if (TODO_REMOVE_usersQueue.length === 0 && TODO_REMOVE_usersData) {
+  //     setTODO_REMOVE_usersQueue(TODO_REMOVE_usersData);
+  //   }
+  // }, [TODO_REMOVE_usersData, TODO_REMOVE_usersQueue]);
+
+  // console.log('TODO_REMOVE_usersData', TODO_REMOVE_usersData);
 
   function handleMapClick(event: any) {
     if (!selectedPosition) {
@@ -44,6 +61,29 @@ function MapContent(props: MapContentProps) {
     }
   }
 
+  // function TODO_REMOVE_handleMapClick(event: any) {
+  //   const newQueue = [...TODO_REMOVE_usersQueue];
+  //   const user = newQueue.pop();
+
+  //   const body = {
+  //     x: event.latlng.lat,
+  //     y: event.latlng.lng,
+  //     radius: 1,
+  //   }
+
+  //   fetch(`http://localhost:3000/app/${user.id}/updateLocation`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(body),
+  //   }).then((resp) => {
+  //     console.log('resp', resp);
+  //     setTODO_REMOVE_usersQueue(newQueue);
+  //   }
+  //   );
+  // }
+
   function handleMapMouseMove(event: any) {
     if (centerOfSelection) {
       const point1 = new LatLng(Number(centerOfSelection.lat), Number(centerOfSelection.lon));
@@ -59,6 +99,7 @@ function MapContent(props: MapContentProps) {
   }, [onSelectNewLocation]);
 
   useMapEvents({
+    // click: TODO_REMOVE_handleMapClick,
     click: handleMapClick,
     mousemove: handleMapMouseMove,
   });
@@ -84,7 +125,7 @@ function MapContent(props: MapContentProps) {
   return (
     <>
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Icon by <a href="https://freeicons.io/profile/3335">MD Badsha Meah</a> on <a href="https://freeicons.io">freeicons.io</a>'
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Icon by <a href="https://freeicons.io/profile/3335">MD Badsha Meah</a> and <a href="https://freeicons.io/profile/722">Fasil</a> on <a href="https://freeicons.io">freeicons.io</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MarkerClusterGroup
@@ -98,10 +139,7 @@ function MapContent(props: MapContentProps) {
       </MarkerClusterGroup>
       {
         locationsToDisplay?.map((location) => (
-          <Marker position={{
-            lat: Number(location.lat),
-            lng: Number(location.lon),
-          }} />
+          <AlertLocationMarker location={location} />
         ))
       }
       {

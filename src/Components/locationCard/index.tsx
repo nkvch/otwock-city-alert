@@ -25,7 +25,6 @@ const LocationCard = ({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          // height: "100%",
           padding: "0.25rem",
         }}
       >

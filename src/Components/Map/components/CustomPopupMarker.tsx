@@ -4,6 +4,9 @@ import { Marker, MarkerProps, Popup } from 'react-leaflet';
 import { LatLngLiteral } from 'leaflet';
 import { getAddressFromLatLng } from '../../../Queries/getAddressFromLocation';
 import { LocationData } from '../types';
+import styled from '@emotion/styled';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 
 type CustomPopupProps = MarkerProps & {
   defaultOpen?: boolean;
@@ -11,9 +14,42 @@ type CustomPopupProps = MarkerProps & {
   onSelectArea: (center: LocationData) => void;
 };
 
+const PopupButton = styled(Button)`
+  /* padding: 1rem; */
+  margin: 0.2rem;
+  height: 80px;
+  width: 80px;
+  color: #FFF;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .MuiButton-startIcon {
+    margin-right: 0;
+    .MuiSvgIcon-root {
+      font-size: 30px;
+    }
+  }
+`;
+
+const AddLocationButton = styled(PopupButton)`
+  background-color: #f08e1f;
+  &:hover {
+    background-color: #f0af66;
+  }
+`;
+
+const SelectAreaButton = styled(PopupButton)`
+  background-color: #2792eb;
+  &:hover {
+    background-color: #62abe7;
+  }
+`;
+
 function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLocation, onSelectArea, ...rest }: CustomPopupProps) {
   const popupRef = useRef(null);
-  // const [center, setCenter] = useState<LatLngLiteral | null>(null);
   const [locationData, setLocationData] = useState<LocationData | null>(null);
 
   useEffect(() => {
@@ -53,38 +89,18 @@ function CustomPopupMarker({ defaultOpen = false, children, onPushToSelectedLoca
             padding: "0.2rem",
           }}
         >
-          <Button
-            id="points-selector"
-            variant="contained"
-            sx={{
-              padding: "0.2rem 0.5rem",
-              fontSize: "0.8rem",
-              backgroundColor: "#4caf50",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#388e3c",
-              },
-            }}
+          <AddLocationButton
+            startIcon={<AddLocationIcon />}
             onClick={onAddPointClick}
           >
-            Dodaj ten punkt
-          </Button>
-          <Button
-            id="area-selector"
-            variant="contained"
+            Punkt
+          </AddLocationButton>
+          <SelectAreaButton
+            startIcon={<ShareLocationIcon />}
             onClick={onSelectAreaClick}
-            sx={{
-              padding: "0.2rem 0.5rem",
-              fontSize: "0.8rem",
-              backgroundColor: "#2196f3",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#1976d2",
-              },
-            }}
           >
-            Wybierz obszar
-          </Button>
+            Obszar
+          </SelectAreaButton>
         </Box>
       </Popup>
     </Marker>
