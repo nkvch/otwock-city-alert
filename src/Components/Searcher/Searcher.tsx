@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Autocomplete, TextField } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import { searchOpenStreetMap } from '../../Queries/searchOpenStreetMap';
-import React, { useCallback, useState } from 'react';
 import { LocationData } from '../Map/types';
 
 const StyledAutocomplete = styled(Autocomplete)`
@@ -20,12 +20,12 @@ const StyledAutocomplete = styled(Autocomplete)`
   }
 `;
 
-export interface SearcherProps {
+export interface SearcherProps extends React.HTMLAttributes<HTMLDivElement> {
   onSelectLocation: (location: LocationData) => void;
 }
 
 function Searcher(props: SearcherProps) {
-  const { onSelectLocation } = props;
+  const { onSelectLocation, ...rest } = props;
   const [searchValue, setSearchValue] = useState<string>('');
 
   const { data, isFetching } = useQuery(['locations', searchValue], () =>
@@ -52,6 +52,7 @@ function Searcher(props: SearcherProps) {
 
   return (
     <StyledAutocomplete
+      {...rest}
       loading={isFetching}
       id="free-solo-2-demo"
       options={data?.map((location) => location.display_name) || []}
