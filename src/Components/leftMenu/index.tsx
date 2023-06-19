@@ -380,7 +380,7 @@ const LeftMenu = ({
                 }}
               >
                 <TextField
-                  label="Wybierz ile godzin"
+                  label="Przewidywany czas"
                   variant="outlined"
                   onChange={(e) => setNumberOfHours(parseInt(e.target.value))}
                   margin="normal"
@@ -411,7 +411,7 @@ const LeftMenu = ({
                   }}
                 >
                   <TextField
-                    label="Wybierz datę początkową"
+                    label="Wybierz datę rozpoczęcia"
                     variant="outlined"
                     value={currentAlert.dateOfStart.toISOString().slice(0, 16)}
                     onChange={(e) => {
@@ -437,7 +437,7 @@ const LeftMenu = ({
                   }}
                 >
                   <TextField
-                    label="Wybierz końiec"
+                    label="Wybierz date ukończenia"
                     variant="outlined"
                     margin="normal"
                     type="datetime-local"
